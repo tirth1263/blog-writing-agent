@@ -1,0 +1,16 @@
+name: blog-writing-agent
+region: nyc
+services:
+  - name: inkprint-web
+    github:
+      repo: tirth1263/blog-writing-agent
+      branch: main
+      deploy_on_push: true
+    environment_slug: python
+    instance_count: 1
+    instance_size_slug: basic-xxs
+    build_command: pip install -r requirements.txt
+    run_command: streamlit run app.py --server.address 0.0.0.0 --server.port 8080
+    http_port: 8080
+    health_check:
+      http_path: /_stcore/health

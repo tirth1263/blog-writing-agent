@@ -1,0 +1,171 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width,initial-scale=1">
+  <meta name="theme-color" content="#17241d">
+  <meta name="description" content="Inkprint learns your writing style and turns ideas into polished blog posts. Powered by DigitalOcean Gradient AI and Memori.">
+  <meta property="og:title" content="Inkprint · AI Blog Writing Agent">
+  <meta property="og:description" content="Turn your writing into an unmistakable voice.">
+  <meta property="og:type" content="website">
+  <title>Inkprint · AI Blog Writing Agent</title>
+  <link rel="icon" href="favicon.svg" type="image/svg+xml">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=DM+Sans:wght@400;500;600;700&family=Manrope:wght@500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="styles.css">
+</head>
+<body>
+  <div class="app-shell">
+    <aside class="sidebar" id="sidebar">
+      <div class="side-top">
+        <a class="brand" href="#" aria-label="Inkprint home">
+          <span class="brand-mark">✦</span>
+          <span><strong>Inkprint</strong><small>Writing intelligence</small></span>
+        </a>
+        <button class="close-side" id="closeSide" aria-label="Close sidebar">×</button>
+      </div>
+
+      <div class="mode"><i></i> Live interactive demo</div>
+
+      <section class="side-section">
+        <div class="step-heading"><b>1</b><span>Teach your style</span></div>
+        <label class="upload-zone" id="uploadZone" for="fileInput">
+          <span class="upload-icon">⇧</span>
+          <strong>Drop your best writing</strong>
+          <small>PDF, DOCX, or TXT · up to 20 MB</small>
+          <span class="browse">Choose files</span>
+        </label>
+        <input id="fileInput" type="file" accept=".pdf,.docx,.txt,.md" multiple hidden>
+        <div class="file-list" id="fileList"></div>
+        <button class="primary side-button" id="analyzeButton" disabled>✦ Analyze writing style</button>
+        <button class="text-button" id="sampleButton">or try a sample article</button>
+      </section>
+
+      <section class="side-section profile-section">
+        <div class="step-heading"><b>2</b><span>Your style fingerprint</span></div>
+        <div id="emptyProfile" class="side-muted">Upload an article to reveal your tone, voice, structure, vocabulary, and sentence rhythm.</div>
+        <div id="profile" class="profile" hidden>
+          <div class="profile-stats">
+            <span><strong id="statSentence">—</strong><small>words / sentence</small></span>
+            <span><strong id="statReadability">—</strong><small>readability</small></span>
+          </div>
+          <div class="profile-item"><small>Tone</small><p id="toneValue"></p></div>
+          <div class="profile-item"><small>Voice</small><p id="voiceValue"></p></div>
+          <div class="profile-item"><small>Structure</small><p id="structureValue"></p></div>
+          <div class="profile-item"><small>Vocabulary</small><p id="vocabularyValue"></p></div>
+          <div class="traits" id="traits"></div>
+        </div>
+      </section>
+
+      <div class="privacy">🔒 Documents are analyzed in your browser. Nothing is uploaded or stored.</div>
+      <a class="github-link" href="https://github.com/tirth1263/blog-writing-agent" target="_blank" rel="noreferrer">View full Streamlit app on GitHub ↗</a>
+    </aside>
+
+    <main class="main">
+      <header class="topbar">
+        <button class="menu-button" id="menuButton" aria-label="Open style panel">☰</button>
+        <div class="status-set">
+          <span class="status active"><i></i> Studio ready</span>
+          <span class="status desktop-only"><i></i> PDF · DOCX · TXT</span>
+          <span class="status desktop-only"><i></i> Private processing</span>
+        </div>
+        <a class="source-link" href="https://github.com/tirth1263/blog-writing-agent" target="_blank" rel="noreferrer">GitHub <span>↗</span></a>
+      </header>
+
+      <section class="hero">
+        <div class="hero-copy">
+          <div class="eyebrow"><i></i> AI that sounds like you</div>
+          <h1>Turn your writing into an <em>unmistakable voice.</em></h1>
+          <p>Teach Inkprint how you think, explain, and connect. Then turn any idea into a polished blog post that feels naturally yours.</p>
+        </div>
+        <div class="hero-art" aria-hidden="true">
+          <div class="orb"><span>✦</span></div>
+          <div class="floating-card card-one"><i></i><i></i><i></i></div>
+          <div class="floating-card card-two"><b>Aa</b><small>your voice</small></div>
+        </div>
+      </section>
+
+      <nav class="tabs" aria-label="Studio sections">
+        <button class="tab active" data-tab="studio">✦ <span>Writing studio</span></button>
+        <button class="tab" data-tab="library">▤ <span>Library</span><b id="libraryCount">0</b></button>
+        <button class="tab" data-tab="about">◌ <span>How it works</span></button>
+      </nav>
+
+      <section class="panel active" id="studioPanel">
+        <div class="section-intro">
+          <small>Writing studio</small>
+          <h2>Turn an idea into a finished draft</h2>
+          <p>Give the agent a topic and a little direction. Your style fingerprint does the rest.</p>
+        </div>
+
+        <form class="brief" id="writingForm">
+          <label class="topic-field">
+            <span>What do you want to write about?</span>
+            <textarea id="topic" rows="3" required placeholder="e.g. Write a practical guide to building healthy remote-work habits…"></textarea>
+            <small><kbd>Ctrl</kbd> + <kbd>Enter</kbd> to generate</small>
+          </label>
+          <div class="field-grid">
+            <label><span>Format</span><select id="format"><option>How-to guide</option><option>Thought leadership</option><option>Listicle</option><option>Explainer</option><option>Opinion essay</option><option>Case study</option></select></label>
+            <label><span>Audience</span><input id="audience" value="Curious professionals"></label>
+            <label><span>Length</span><select id="length"><option>Medium · 800–1,000 words</option><option>Short · 400–600 words</option><option>Long · 1,300–1,600 words</option></select></label>
+            <label><span>Keywords</span><input id="keywords" placeholder="AI strategy, productivity, teams"></label>
+          </div>
+          <label><span>Extra direction <i>optional</i></span><input id="direction" placeholder="Include a real-world example and end with a checklist"></label>
+          <button class="primary generate" type="submit">Generate in my voice <b>→</b></button>
+        </form>
+
+        <div class="empty-draft" id="emptyDraft">
+          <div>✎</div><h3>Your next draft starts here</h3>
+          <p>Describe an idea above. Inkprint will structure it, match your writing fingerprint, and return clean Markdown ready to publish.</p>
+          <div class="prompt-chips">
+            <button data-prompt="How ethical AI can improve patient care without losing human trust">Ethical AI in healthcare</button>
+            <button data-prompt="A practical guide to sustainable remote work habits">Sustainable remote work</button>
+            <button data-prompt="Why small businesses should design a clear AI strategy now">AI strategy for small teams</button>
+          </div>
+        </div>
+
+        <article class="draft" id="draft" hidden>
+          <div class="draft-head"><div class="draft-meta"><span id="wordCount">0 words</span><span>Local demo engine</span><span>Markdown</span></div><button id="editDraft">Edit draft</button></div>
+          <div class="article-content" id="articleContent" contenteditable="false"></div>
+          <div class="draft-actions">
+            <button id="copyArticle">▣ Copy markdown</button>
+            <button id="downloadArticle">⇩ Download .md</button>
+            <button id="saveArticle" class="save">＋ Save to library</button>
+          </div>
+          <p class="demo-note">Demo mode uses a local writing engine. Deploy the Streamlit app and add DigitalOcean credentials for full AI generation.</p>
+        </article>
+      </section>
+
+      <section class="panel" id="libraryPanel">
+        <div class="section-intro"><small>Content library</small><h2>The work worth keeping</h2><p>Saved drafts live privately in this browser until you remove them.</p></div>
+        <div id="libraryEmpty" class="empty-draft compact"><div>▤</div><h3>No saved drafts yet</h3><p>Generate an article in the studio, then save it here for quick access.</p></div>
+        <div class="library-grid" id="libraryGrid"></div>
+      </section>
+
+      <section class="panel" id="aboutPanel">
+        <div class="section-intro"><small>How it works</small><h2>Your voice, translated into a writing system</h2><p>Two focused agents work together, with memory connecting every session.</p></div>
+        <div class="feature-grid">
+          <article><span>⌁</span><small>Step 01</small><h3>Read locally</h3><p>PDF, DOCX, TXT, and Markdown files are extracted without saving the originals.</p></article>
+          <article><span>◌</span><small>Step 02</small><h3>Build a fingerprint</h3><p>The Knowledge Agent maps tone, voice, rhythm, structure, vocabulary, and habits.</p></article>
+          <article><span>✦</span><small>Step 03</small><h3>Write with memory</h3><p>The Writing Agent combines your fingerprint with every brief. Memori carries context forward.</p></article>
+        </div>
+        <div class="architecture">
+          <div><span>PDF · DOCX · TXT</span><strong>Your writing</strong></div><i>→</i>
+          <div><span>Knowledge agent</span><strong>Style fingerprint</strong></div><i>→</i>
+          <div><span>Memori</span><strong>Persistent context</strong></div><i>→</i>
+          <div><span>DigitalOcean AI</span><strong>Original article</strong></div>
+        </div>
+      </section>
+
+      <footer>Built with <strong>DigitalOcean Gradient AI</strong> · <strong>Memori</strong> · <strong>Streamlit</strong><span>Open source under MIT</span></footer>
+    </main>
+  </div>
+  <div class="toast" id="toast" role="status"></div>
+  <div class="overlay" id="overlay"></div>
+
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/mammoth/1.8.0/mammoth.browser.min.js" defer></script>
+  <script src="https://cdnjs.cloudflare.com/ajax/libs/pdf.js/3.11.174/pdf.min.js" defer></script>
+  <script src="app.js" defer></script>
+</body>
+</html>
