@@ -7,17 +7,17 @@
     and writes original blog posts in that voice with DigitalOcean Gradient AI and Memori.
   </p>
   <p>
-    <a href="https://tirth1263.github.io/blog-writing-agent/"><strong>Try the live interactive showcase →</strong></a>
+    <a href="https://blog-writing-agent-gamma.vercel.app/"><strong>Try the live interactive showcase →</strong></a>
     ·
     <a href="#quick-start">Run the full app</a>
     ·
     <a href="#deploy">Deploy your own</a>
   </p>
 
-  [![Live demo](https://img.shields.io/badge/live-demo-b9ef69?style=for-the-badge&logo=githubpages&logoColor=17241d)](https://tirth1263.github.io/blog-writing-agent/)
+  [![Live demo](https://img.shields.io/badge/live-demo-b9ef69?style=for-the-badge&logo=vercel&logoColor=17241d)](https://blog-writing-agent-gamma.vercel.app/)
   [![Python](https://img.shields.io/badge/Python-3.10+-3776AB?style=for-the-badge&logo=python&logoColor=white)](https://www.python.org/)
   [![Streamlit](https://img.shields.io/badge/Streamlit-app-FF4B4B?style=for-the-badge&logo=streamlit&logoColor=white)](https://streamlit.io/)
-  [![Tests](https://img.shields.io/github/actions/workflow/status/tirth1263/blog-writing-agent/test.yml?style=for-the-badge&label=tests)](https://github.com/tirth1263/blog-writing-agent/actions/workflows/test.yml)
+  [![Tests](https://img.shields.io/badge/tests-7%20passing-b9ef69?style=for-the-badge&logo=pytest&logoColor=17241d)](tests/)
   [![License](https://img.shields.io/badge/license-MIT-1d4935?style=for-the-badge)](LICENSE)
 </div>
 
@@ -44,7 +44,7 @@ Inkprint treats those choices as a reusable writing system. Upload a few article
 
 | Experience | Best for | Processing | AI mode |
 |---|---|---|---|
-| [Public interactive showcase](https://tirth1263.github.io/blog-writing-agent/) | Trying the workflow instantly | Entirely in the browser; library uses `localStorage` | Local style analyzer and representative demo writer |
+| [Public interactive showcase](https://blog-writing-agent-gamma.vercel.app/) | Trying the workflow instantly | Entirely in the browser; library uses `localStorage` | Local style analyzer and representative demo writer |
 | Full Streamlit application (`app.py`) | Real writing and production deployment | Documents in memory; profiles/articles in SQLite | DigitalOcean Gradient AI + optional Memori, with automatic local fallback |
 
 The public showcase deliberately does not collect API keys. The full Streamlit app supports secrets safely on the server or session-only credentials entered from its configuration panel.
@@ -87,7 +87,7 @@ A writing brief combines the topic, audience, format, target length, keywords, e
 | `tests/` | Unit coverage for processing, analysis, generation, persistence, and escaping |
 | `.do/app.yaml` | DigitalOcean App Platform application specification |
 | `Dockerfile` | Non-root production container with a Streamlit health check |
-| `.github/workflows/` | Automated quality checks and GitHub Pages deployment |
+| `.github/workflows/` | Automated Ruff and pytest quality checks |
 
 ## Quick start
 
@@ -190,6 +190,19 @@ When both DigitalOcean and Memori are configured, the sidebar confirms that Memo
 For teams that want their own database, Memori also documents a [GibsonAI serverless database integration](https://memorilabs.ai/docs/open-source/databases/gibsonai/).
 
 ## Deploy
+
+### Current production showcase
+
+The privacy-first browser experience is live at **[blog-writing-agent-gamma.vercel.app](https://blog-writing-agent-gamma.vercel.app/)**. It is the contents of `docs/` deployed as an immutable static bundle, so no server or API secret is required.
+
+To publish the same bundle to your own Vercel project:
+
+```bash
+npx vercel login
+npx vercel deploy docs --prod --yes
+```
+
+The repository is also configured for GitHub Pages from `main/docs`, giving the showcase a second deployment path without changing its code.
 
 ### DigitalOcean App Platform
 

@@ -23,7 +23,7 @@ dev = [
 ]
 
 [project.urls]
-Homepage = "https://tirth1263.github.io/blog-writing-agent/"
+Homepage = "https://blog-writing-agent-gamma.vercel.app/"
 Repository = "https://github.com/tirth1263/blog-writing-agent"
 Issues = "https://github.com/tirth1263/blog-writing-agent/issues"
 
