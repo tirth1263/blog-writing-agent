@@ -254,7 +254,7 @@ The test suite covers:
 - Profile/article persistence and deletion
 - HTML export escaping
 
-GitHub Actions runs the same lint and test checks on every push and pull request. A separate workflow publishes `docs/` to GitHub Pages.
+GitHub Actions runs the same lint and test checks on every push and pull request. GitHub Pages publishes the browser showcase directly from `docs/` on the `main` branch.
 
 ## Example workflow
 
